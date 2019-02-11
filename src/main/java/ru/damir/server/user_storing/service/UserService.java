@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.damir.server.user_storing.controllers.response.UserResponse;
 import ru.damir.server.user_storing.dao.UserDao;
-import ru.damir.server.user_storing.dao.entities.User;
 import ru.damir.server.user_storing.service.mapping.UserDtoMapper;
 
 import java.util.List;
@@ -26,15 +25,15 @@ public class UserService {
         return userDao.findAllUsers(limit, offset).stream().map(mapper::fromModel).collect(Collectors.toList());
     }
 
+    public List<UserResponse> getUsers(){
+        return userDao.findAllUsers().stream().map(mapper::fromModel).collect(Collectors.toList());
+    }
+
     public UserResponse getUser(String email, int accountNumber) {
-        User response;
-        if (!email.isEmpty() && accountNumber != 0) {
-            response = userDao.findUserByEmailAndAccountNumber(email, accountNumber);
-        } else if (!email.isEmpty()) {
-            response = userDao.findUserByEmail(email);
-        } else {
-            response = userDao.findUserByAccountNumber(accountNumber);
-        }
-        return mapper.fromModel(response);
+        return mapper.fromModel(userDao.findUserByEmailAndAccountNumber(email, accountNumber));
+    }
+
+    public UserResponse getUser(int accountNumber) {
+        return mapper.fromModel(userDao.findUserByAccountNumber(accountNumber));
     }
 }
