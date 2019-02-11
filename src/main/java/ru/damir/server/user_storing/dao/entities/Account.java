@@ -1,24 +1,23 @@
 package ru.damir.server.user_storing.dao.entities;
 
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
-@Setter
-@Getter
+@Data
 @Entity
 public class Account {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    Integer id;
-
     Integer number;
 
     String name;
 
-    @JoinColumn(name = "fk_user")
+    @ManyToOne
+    @JoinColumn
     User user;
 
 }

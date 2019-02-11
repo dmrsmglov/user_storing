@@ -1,17 +1,14 @@
 package ru.damir.server.user_storing.dao.entities;
 
 
-import lombok.Getter;
-import lombok.Setter;
-import ru.damir.server.user_storing.dao.entities.Account;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Getter
-@Setter
+@Data
 @Table(name = "Usr")
 public class User {
 
@@ -37,7 +34,7 @@ public class User {
         this.email = email;
     }
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(targetEntity = Account.class, mappedBy = "user")
     Set<Account> accounts = new HashSet<>();
 
 }
