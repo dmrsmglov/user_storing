@@ -1,15 +1,9 @@
 package ru.damir.server.user_storing.controllers.response;
 
+import lombok.Data;
 
-import org.springframework.hateoas.ResourceSupport;
-import org.springframework.hateoas.core.Relation;
-import ru.damir.server.user_storing.dao.entities.Account;
-
-import java.util.Set;
-
-
-@Relation(value = "user", collectionRelation = "users")
-public class UserResponse extends ResourceSupport{
+@Data
+public class UserResponse {
     private String firstName;
     private String middleName;
     private String lastName;
@@ -26,4 +20,5 @@ public class UserResponse extends ResourceSupport{
 
     public UserResponse() {
     }
+
 }
