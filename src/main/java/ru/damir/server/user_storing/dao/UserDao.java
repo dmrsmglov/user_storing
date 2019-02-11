@@ -63,9 +63,9 @@ public class UserDao {
         CriteriaQuery<User> cq = criteriaBuilder.createQuery(User.class);
         Root<User> userRoot = cq.from(User.class);
         Join<User, Account> accountJoin = userRoot.join("accounts");
-        cq.select(userRoot).where(criteriaBuilder.and(
+        cq.select(userRoot).where(
                 criteriaBuilder.equal(accountJoin.get("number"), accountNumber),
-                criteriaBuilder.equal(accountJoin.get("email"), email)));
+                criteriaBuilder.equal(userRoot.get("email"), email));
 
         return entityManager.createQuery(cq).getResultList().stream().findFirst().orElse(null);
     }

@@ -19,5 +19,4 @@ public class Account {
     @ManyToOne
     @JoinColumn
     User user;
-
 }

@@ -11,6 +11,9 @@ import java.util.stream.Collectors;
 public class UserDtoMapper {
 
     public UserResponse fromModel(User user) {
+        if (user == null) {
+            return null;
+        }
         return new UserResponse(
                 user.getFirstName(),
                 user.getMiddleName(),

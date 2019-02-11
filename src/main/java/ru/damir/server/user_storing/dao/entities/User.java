@@ -4,8 +4,8 @@ package ru.damir.server.user_storing.dao.entities;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -35,6 +35,6 @@ public class User {
     }
 
     @OneToMany(targetEntity = Account.class, mappedBy = "user")
-    Set<Account> accounts = new HashSet<>();
+    List<Account> accounts = new ArrayList<>();
 
 }
