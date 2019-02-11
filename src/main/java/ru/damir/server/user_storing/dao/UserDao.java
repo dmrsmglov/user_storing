@@ -24,7 +24,6 @@ public class UserDao {
         this.entityManager = entityManager;
     }
 
-
     public List<User> findAllUsers(int limit, int offset) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<User> cq = criteriaBuilder.createQuery(User.class);
@@ -38,11 +37,11 @@ public class UserDao {
     }
 
     public List<User> findAllUsers() {
-
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<User> cq = criteriaBuilder.createQuery(User.class);
         Root<User> userRoot = cq.from(User.class);
         cq.select(userRoot);
+
         return entityManager.createQuery(cq)
                 .getResultList();
     }
@@ -60,7 +59,14 @@ public class UserDao {
     }
 
     public User findUserByEmailAndAccountNumber(String email, int accountNumber) {
-        return null;
-    }
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<User> cq = criteriaBuilder.createQuery(User.class);
+        Root<User> userRoot = cq.from(User.class);
+        Join<User, Account> accountJoin = userRoot.join("accounts");
+        cq.select(userRoot).where(criteriaBuilder.and(
+                criteriaBuilder.equal(accountJoin.get("number"), accountNumber),
+                criteriaBuilder.equal(accountJoin.get("email"), email)));
 
+        return entityManager.createQuery(cq).getResultList().stream().findFirst().orElse(null);
+    }
 }
