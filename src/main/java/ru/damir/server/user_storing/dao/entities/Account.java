@@ -1,4 +1,4 @@
-package ru.damir.server.user_storing.dao;
+package ru.damir.server.user_storing.dao.entities;
 
 
 import lombok.Getter;
@@ -18,7 +18,6 @@ public class Account {
 
     String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_user")
     User user;
 
