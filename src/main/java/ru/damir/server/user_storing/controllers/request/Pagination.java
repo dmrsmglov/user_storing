@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 @Data
 public class Pagination {
     @NotNull
-    private int limit;
+    private Integer limit;
     @NotNull
-    private int offset;
+    private Integer offset;
 }

@@ -34,7 +34,7 @@ public class User {
         this.email = email;
     }
 
-    @OneToMany(targetEntity = Account.class, mappedBy = "user")
+    @OneToMany(targetEntity = Account.class, mappedBy = "user", fetch = FetchType.EAGER)
     List<Account> accounts = new ArrayList<>();
 
 }

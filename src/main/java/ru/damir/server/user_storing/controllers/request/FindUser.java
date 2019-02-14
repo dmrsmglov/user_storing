@@ -8,6 +8,6 @@ import javax.validation.constraints.NotNull;
 @Data
 public class FindUser {
     @NotNull
-    private int accountNumber;
+    private Integer accountNumber;
     private String email;
 }

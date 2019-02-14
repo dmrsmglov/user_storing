@@ -12,7 +12,7 @@ public class UserDtoMapper {
 
     public UserResponse fromModel(User user) {
         if (user == null) {
-            return null;
+            return new UserResponse();
         }
         return new UserResponse(
                 user.getFirstName(),
