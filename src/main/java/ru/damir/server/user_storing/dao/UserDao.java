@@ -1,6 +1,7 @@
 package ru.damir.server.user_storing.dao;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import ru.damir.server.user_storing.dao.entities.Account;
 import ru.damir.server.user_storing.dao.entities.User;
@@ -17,16 +18,21 @@ import java.util.List;
 public class UserDao {
 
     @PersistenceContext
-    private final EntityManager entityManager;
+    private EntityManager entityManager;
 
-    @Autowired
-    public UserDao(EntityManager entityManager) {
-        this.entityManager = entityManager;
+    private CriteriaBuilder criteriaBuilder;
+
+    @EventListener(classes = ContextRefreshedEvent.class)
+    public void handleContextRefreshedEvent(){
+        criteriaBuilder = entityManager.getCriteriaBuilder();
+    }
+
+    private CriteriaQuery<User> createUserQuery() {
+        return criteriaBuilder.createQuery(User.class);
     }
 
     public List<User> findAllUsers(int limit, int offset) {
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<User> cq = criteriaBuilder.createQuery(User.class);
+        CriteriaQuery<User> cq = createUserQuery();
         Root<User> userRoot = cq.from(User.class);
         cq.select(userRoot);
 
@@ -37,8 +43,7 @@ public class UserDao {
     }
 
     public List<User> findAllUsers() {
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<User> cq = criteriaBuilder.createQuery(User.class);
+        CriteriaQuery<User> cq = createUserQuery();
         Root<User> userRoot = cq.from(User.class);
         cq.select(userRoot);
 
@@ -47,9 +52,7 @@ public class UserDao {
     }
 
     public User findUserByAccountNumber(int accountNumber) {
-
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<User> cq = criteriaBuilder.createQuery(User.class);
+        CriteriaQuery<User> cq = createUserQuery();
         Root<User> userRoot = cq.from(User.class);
         Join<User, Account> accountJoin = userRoot.join("accounts");
         cq.select(userRoot).where(
@@ -59,8 +62,7 @@ public class UserDao {
     }
 
     public User findUserByEmailAndAccountNumber(String email, int accountNumber) {
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<User> cq = criteriaBuilder.createQuery(User.class);
+        CriteriaQuery<User> cq = createUserQuery();
         Root<User> userRoot = cq.from(User.class);
         Join<User, Account> accountJoin = userRoot.join("accounts");
         cq.select(userRoot).where(
